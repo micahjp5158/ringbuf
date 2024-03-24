@@ -38,12 +38,12 @@ typedef enum ringbuf_status {
 
 /* Struct members should not be access directly - only use init, get, and put handlers*/
 typedef struct {
-  void *buf;                    // Ringbuffer data buffer
-  size_t elem_size;             // Size of one element in the buffer
-  size_t buf_size;              // Number of elements in the buffer
-  volatile size_t head;         // First element of the ringbuffer
-  volatile size_t tail;         // Last element of the ringbuffer
-  volatile size_t num_elements; // Number of elements in the ringbuffer
+  void *buf;                    /* Ringbuffer data buffer */
+  size_t elem_size;             /* Size of one element in the buffer */
+  size_t buf_size;              /* Number of elements in the buffer */
+  volatile size_t head;         /* First element of the ringbuffer */
+  volatile size_t tail;         /* Last element of the ringbuffer */
+  volatile size_t num_elements; /* Number of elements in the ringbuffer */
 } RingBuf_Handle_t;
 
 /************************************
@@ -98,4 +98,4 @@ RingBuf_Status_t ringbuf_clear(RingBuf_Handle_t *ringbuf);
 }
 #endif
 
-#endif // __RINGBUF_H__
+#endif /* __RINGBUF_H__ */

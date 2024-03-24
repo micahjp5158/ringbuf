@@ -13,6 +13,7 @@
 #include "ringbuf.h"
 
 #include <stdbool.h>
+#include <stdint.h>
 #include <string.h>
 
 /************************************
@@ -48,16 +49,16 @@
  ************************************/
 RingBuf_Status_t ringbuf_init(RingBuf_Handle_t *ringbuf, void *buf, size_t elem_size, size_t buf_size)
 {
-  // Verify the buffer exists
+  /* Verify the buffer exists */
   if (buf == NULL)
   {
     return RINGBUF_STATUS_NULL_PTR;
   }
 
-  // Clear the buffer
+  /* Clear the buffer */
   memset(buf, 0, ringbuf->elem_size * ringbuf->buf_size);
 
-  // Set / initialize ringbuffer struct members
+  /* Set / initialize ringbuffer struct members */
   ringbuf->buf = buf;
   ringbuf->elem_size = elem_size;
   ringbuf->buf_size = buf_size;
@@ -69,17 +70,17 @@ RingBuf_Status_t ringbuf_init(RingBuf_Handle_t *ringbuf, void *buf, size_t elem_
 }
 
 RingBuf_Status_t ringbuf_get(RingBuf_Handle_t *ringbuf, void *data){
-  // Make sure buffer is not empty
+  /* Make sure buffer is not empty */
   if (ringbuf->num_elements == 0)
   {
     return RINGBUF_STATUS_EMPTY;
   }
 
-  // Copy data from current head to the destination
-  memcpy(data, (ringbuf->buf + (ringbuf->tail * ringbuf->elem_size)), ringbuf->elem_size);
+  /* Copy data from current head to the destination */
+  memcpy(data, ((uint8_t *)ringbuf->buf + (ringbuf->tail * ringbuf->elem_size)), ringbuf->elem_size);
 
-  // If head is at final element, go to beginning
-  // Othersize, wrap back to the beginning
+  /* If head is at final element, go to beginning */
+  /* Othersize, wrap back to the beginning */
   if(ringbuf->head == ringbuf->buf_size)
   {
     ringbuf->head = 0;
@@ -87,7 +88,7 @@ RingBuf_Status_t ringbuf_get(RingBuf_Handle_t *ringbuf, void *data){
     ringbuf->head++;
   }
 
-  // Decrease number of elements
+  /* Decrease number of elements */
   ringbuf->num_elements--;
 
   return RINGBUF_STATUS_OK;
@@ -95,14 +96,14 @@ RingBuf_Status_t ringbuf_get(RingBuf_Handle_t *ringbuf, void *data){
 
 RingBuf_Status_t ringbuf_put(RingBuf_Handle_t *ringbuf, const void *data)
 {
-  // Make sure buffer is not full
+  /* Make sure buffer is not full */
   if (ringbuf->num_elements >= ringbuf->buf_size)
   {
     return RINGBUF_STATUS_FULL;
   }
 
-  // If tail is at final element, go to beginning
-  // Othersize, wrap back to the beginning
+  /* If tail is at final element, go to beginning */
+  /* Othersize, wrap back to the beginning */
   if(ringbuf->tail == ringbuf->buf_size)
   {
     ringbuf->tail = 0;
@@ -110,10 +111,10 @@ RingBuf_Status_t ringbuf_put(RingBuf_Handle_t *ringbuf, const void *data)
     ringbuf->tail++;
   }
 
-  // Copy the data into the buffer at the new tail position
-  memcpy((ringbuf->buf + (ringbuf->tail * ringbuf->elem_size)), data, ringbuf->elem_size);
+  /* Copy the data into the buffer at the new tail position */
+  memcpy(((uint8_t *)ringbuf->buf + (ringbuf->tail * ringbuf->elem_size)), data, ringbuf->elem_size);
 
-  // Increase number of elements
+  /* Increase number of elements */
   ringbuf->num_elements++;
 
   return RINGBUF_STATUS_OK;
@@ -121,10 +122,10 @@ RingBuf_Status_t ringbuf_put(RingBuf_Handle_t *ringbuf, const void *data)
 
 RingBuf_Status_t ringbuf_clear(RingBuf_Handle_t *ringbuf)
 {
-  // Reset head and tail position
+  /* Reset head and tail position */
   ringbuf->head = ringbuf->tail;
 
-  // Set number of elements to 0
+  /* Set number of elements to 0 */
   ringbuf->num_elements = 0;
 
   return RINGBUF_STATUS_OK;
