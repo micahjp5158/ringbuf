@@ -11,6 +11,7 @@ extern void tearDown(void);
 extern void test_ringbuf_init(void);
 extern void test_ringbuf_put(void);
 extern void test_ringbuf_get(void);
+extern void test_ringbuf_clear(void);
 extern void test_ringbuf_put_while_full(void);
 extern void test_ringbuf_get_while_empty(void);
 extern void test_ringbuf_loop_when_needed(void);
@@ -75,12 +76,13 @@ static void run_test(UnityTestFunction func, const char* name, UNITY_LINE_TYPE l
 int main(void)
 {
   UnityBegin("test/ringbuf_test.c");
-  run_test(test_ringbuf_init, "test_ringbuf_init", 29);
-  run_test(test_ringbuf_put, "test_ringbuf_put", 46);
-  run_test(test_ringbuf_get, "test_ringbuf_get", 63);
-  run_test(test_ringbuf_put_while_full, "test_ringbuf_put_while_full", 93);
-  run_test(test_ringbuf_get_while_empty, "test_ringbuf_get_while_empty", 120);
-  run_test(test_ringbuf_loop_when_needed, "test_ringbuf_loop_when_needed", 137);
+  run_test(test_ringbuf_init, "test_ringbuf_init", 32);
+  run_test(test_ringbuf_put, "test_ringbuf_put", 52);
+  run_test(test_ringbuf_get, "test_ringbuf_get", 73);
+  run_test(test_ringbuf_clear, "test_ringbuf_clear", 106);
+  run_test(test_ringbuf_put_while_full, "test_ringbuf_put_while_full", 140);
+  run_test(test_ringbuf_get_while_empty, "test_ringbuf_get_while_empty", 171);
+  run_test(test_ringbuf_loop_when_needed, "test_ringbuf_loop_when_needed", 193);
 
   return UnityEnd();
 }
