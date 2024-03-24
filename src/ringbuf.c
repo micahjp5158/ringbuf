@@ -81,7 +81,7 @@ RingBuf_Status_t ringbuf_get(RingBuf_Handle_t *ringbuf, void *data){
 
   /* If head is at final element, go to beginning */
   /* Othersize, wrap back to the beginning */
-  if(ringbuf->head == ringbuf->buf_size)
+  if(ringbuf->head == ringbuf->buf_size - 1)
   {
     ringbuf->head = 0;
   } else {
