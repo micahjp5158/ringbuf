@@ -12,6 +12,7 @@ extern void test_ringbuf_init(void);
 extern void test_ringbuf_put(void);
 extern void test_ringbuf_get(void);
 extern void test_ringbuf_put_while_full(void);
+extern void test_ringbuf_get_while_empty(void);
 
 
 /*=======Mock Management=====*/
@@ -77,6 +78,7 @@ int main(void)
   run_test(test_ringbuf_put, "test_ringbuf_put", 46);
   run_test(test_ringbuf_get, "test_ringbuf_get", 63);
   run_test(test_ringbuf_put_while_full, "test_ringbuf_put_while_full", 93);
+  run_test(test_ringbuf_get_while_empty, "test_ringbuf_get_while_empty", 120);
 
   return UnityEnd();
 }

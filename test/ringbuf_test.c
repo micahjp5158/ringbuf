@@ -93,6 +93,7 @@ void test_ringbuf_get(void)
 void test_ringbuf_put_while_full(void)
 {
   RingBuf_Status_t ringbuf_status;
+  uint8_t data;
 
   /* Initialize the ring buffer */
   ringbuf_status = ringbuf_init(&ringbuf_handle, buf, sizeof(uint8_t), BUF_SIZE);
@@ -101,7 +102,7 @@ void test_ringbuf_put_while_full(void)
   /* Fill the ring buffer */
   for (int i = 0; i < BUF_SIZE; i++)
   {
-    uint8_t data = i;
+    data = i;
     ringbuf_status = ringbuf_put(&ringbuf_handle, &data);
     TEST_ASSERT_EQUAL(RINGBUF_STATUS_OK, ringbuf_status);
   }
@@ -111,7 +112,24 @@ void test_ringbuf_put_while_full(void)
   TEST_ASSERT_EQUAL(BUF_SIZE, ringbuf_handle.num_elements);
 
   /* Verify that writing to the ringbuf while full returns an error */
-  uint8_t data = BUF_SIZE;
+  data = BUF_SIZE;
   ringbuf_status = ringbuf_put(&ringbuf_handle, &data);
   TEST_ASSERT_EQUAL(RINGBUF_STATUS_FULL, ringbuf_status);
+}
+
+void test_ringbuf_get_while_empty(void)
+{
+  RingBuf_Status_t ringbuf_status;
+  uint8_t data;
+
+  /* Initialize the ring buffer */
+  ringbuf_status = ringbuf_init(&ringbuf_handle, buf, sizeof(uint8_t), BUF_SIZE);
+  TEST_ASSERT_EQUAL(RINGBUF_STATUS_OK, ringbuf_status);
+
+  /* Verify the buffer is empty */
+  TEST_ASSERT_EQUAL(0, ringbuf_handle.num_elements);
+
+  /* Verify that reading from an empty buffer returns an error */
+  ringbuf_status = ringbuf_get(&ringbuf_handle, &data);
+  TEST_ASSERT_EQUAL(RINGBUF_STATUS_EMPTY, ringbuf_status);
 }
