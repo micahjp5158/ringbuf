@@ -11,6 +11,7 @@ extern void tearDown(void);
 extern void test_ringbuf_init(void);
 extern void test_ringbuf_put(void);
 extern void test_ringbuf_get(void);
+extern void test_ringbuf_put_while_full(void);
 
 
 /*=======Mock Management=====*/
@@ -75,6 +76,7 @@ int main(void)
   run_test(test_ringbuf_init, "test_ringbuf_init", 29);
   run_test(test_ringbuf_put, "test_ringbuf_put", 46);
   run_test(test_ringbuf_get, "test_ringbuf_get", 63);
+  run_test(test_ringbuf_put_while_full, "test_ringbuf_put_while_full", 93);
 
   return UnityEnd();
 }

@@ -28,7 +28,7 @@ endif
 
 UNITY_ROOT=./submodules/Unity
 
-CFLAGS=-std=c89
+CFLAGS=-std=c11
 CFLAGS += -Wall
 CFLAGS += -Wextra
 CFLAGS += -Wpointer-arith

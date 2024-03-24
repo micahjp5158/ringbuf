@@ -77,7 +77,7 @@ RingBuf_Status_t ringbuf_get(RingBuf_Handle_t *ringbuf, void *data){
   }
 
   /* Copy data from current head to the destination */
-  memcpy(data, ((uint8_t *)ringbuf->buf + (ringbuf->tail * ringbuf->elem_size)), ringbuf->elem_size);
+  memcpy(data, ((uint8_t *)ringbuf->buf + (ringbuf->head * ringbuf->elem_size)), ringbuf->elem_size);
 
   /* If head is at final element, go to beginning */
   /* Othersize, wrap back to the beginning */
@@ -102,17 +102,17 @@ RingBuf_Status_t ringbuf_put(RingBuf_Handle_t *ringbuf, const void *data)
     return RINGBUF_STATUS_FULL;
   }
 
+  /* Copy the data into the buffer at the new tail position */
+  memcpy(((uint8_t *)ringbuf->buf + (ringbuf->tail * ringbuf->elem_size)), data, ringbuf->elem_size);
+
   /* If tail is at final element, go to beginning */
   /* Othersize, wrap back to the beginning */
-  if(ringbuf->tail == ringbuf->buf_size)
+  if(ringbuf->tail >= ringbuf->buf_size - 1)
   {
     ringbuf->tail = 0;
   } else {
     ringbuf->tail++;
   }
-
-  /* Copy the data into the buffer at the new tail position */
-  memcpy(((uint8_t *)ringbuf->buf + (ringbuf->tail * ringbuf->elem_size)), data, ringbuf->elem_size);
 
   /* Increase number of elements */
   ringbuf->num_elements++;
