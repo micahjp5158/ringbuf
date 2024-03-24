@@ -26,6 +26,9 @@ void tearDown(void)
 {
 }
 
+/**
+ * @brief Verifies the ring buffer initialization behaves as expected.
+ ********************************************************************************/
 void test_ringbuf_init(void)
 {
   RingBuf_Status_t ringbuf_status;
@@ -43,6 +46,9 @@ void test_ringbuf_init(void)
   TEST_ASSERT_EQUAL(0, ringbuf_handle.num_elements);
 }
 
+/**
+ * @brief Verifies that writing an element to the ring buffer behaves as expected.
+ ********************************************************************************/
 void test_ringbuf_put(void)
 {
   RingBuf_Status_t ringbuf_status;
@@ -60,6 +66,10 @@ void test_ringbuf_put(void)
   TEST_ASSERT_EQUAL(1, ringbuf_handle.num_elements);
 }
 
+/**
+ * @brief Verifies that reading an element from the ring buffer behaves as
+ *        expected.
+ ********************************************************************************/
 void test_ringbuf_get(void)
 {
   RingBuf_Status_t ringbuf_status;
@@ -90,6 +100,10 @@ void test_ringbuf_get(void)
   TEST_ASSERT_EQUAL(0, ringbuf_handle.num_elements);
 }
 
+/**
+ * @brief Verifies that writing to the ring buffer while it is full returns the
+ *        appropriate error code.
+ ********************************************************************************/
 void test_ringbuf_put_while_full(void)
 {
   RingBuf_Status_t ringbuf_status;
@@ -117,6 +131,10 @@ void test_ringbuf_put_while_full(void)
   TEST_ASSERT_EQUAL(RINGBUF_STATUS_FULL, ringbuf_status);
 }
 
+/**
+ * @brief Verifies that reading from the ring buffer while it is empty returns the
+ *        appropriate error code.
+ ********************************************************************************/
 void test_ringbuf_get_while_empty(void)
 {
   RingBuf_Status_t ringbuf_status;
@@ -134,6 +152,11 @@ void test_ringbuf_get_while_empty(void)
   TEST_ASSERT_EQUAL(RINGBUF_STATUS_EMPTY, ringbuf_status);
 }
 
+/**
+ * @brief Verifies that writing to and reading from the ring buffer handles
+ *        looping the head / tail to the beginning of the buffer once the end
+ *        is reached as expected.
+ ********************************************************************************/
 void test_ringbuf_loop_when_needed(void)
 {
   RingBuf_Status_t ringbuf_status;
