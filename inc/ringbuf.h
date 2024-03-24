@@ -84,6 +84,16 @@ RingBuf_Status_t ringbuf_get(RingBuf_Handle_t *ringbuf, void *data);
  ********************************************************************************/
 RingBuf_Status_t ringbuf_put(RingBuf_Handle_t *ringbuf, const void *data);
 
+/**
+ * @brief Clears all data in the ringbuffer.
+ * @param ringbuf: Ringbuf handler.
+ * @note: Does not delete data from the buffer, only resets the head and
+ *        tail position and sets number of elements to 0.
+ * @note: Contains a critical section for the ring buffer. Assumes the caller
+ *        holds the appropriate mutex or otherwise prevents race conditions.
+ ********************************************************************************/
+RingBuf_Status_t ringbuf_clear(RingBuf_Handle_t *ringbuf);
+
 #ifdef __cplusplus
 }
 #endif

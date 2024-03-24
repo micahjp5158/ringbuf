@@ -10,7 +10,7 @@
 /************************************
  * INCLUDES
  ************************************/
-#include "ringbuf->h"
+#include "ringbuf.h"
 
 #include <stdbool.h>
 #include <string.h>
@@ -68,7 +68,7 @@ RingBuf_Status_t ringbuf_init(RingBuf_Handle_t *ringbuf, void *buf, size_t elem_
   return RINGBUF_STATUS_OK;
 }
 
-RingBuf_Status_t ringbuf_get(RingBuf_Handle_t ringbuf, void *data){
+RingBuf_Status_t ringbuf_get(RingBuf_Handle_t *ringbuf, void *data){
   // Make sure buffer is not empty
   if (ringbuf->num_elements == 0)
   {
@@ -76,7 +76,7 @@ RingBuf_Status_t ringbuf_get(RingBuf_Handle_t ringbuf, void *data){
   }
 
   // Copy data from current head to the destination
-  memcpy(data, ringbuf->buf[ringbuf->head * ringbuf->elem_size], ringbuf->elem_size);
+  memcpy(data, &(ringbuf->buf[ringbuf->head * ringbuf->elem_size]), ringbuf->elem_size);
 
   // If head is at final element, go to beginning
   // Othersize, wrap back to the beginning
@@ -93,10 +93,10 @@ RingBuf_Status_t ringbuf_get(RingBuf_Handle_t ringbuf, void *data){
   return RINGBUF_STATUS_OK;
 }
 
-RingBuf_Status_t ringbuf_put(RingBuf_Handle_t ringbuf, const void *data)
+RingBuf_Status_t ringbuf_put(RingBuf_Handle_t *ringbuf, const void *data)
 {
   // Make sure buffer is not full
-  if (ringbuf->num_elements >= buf_size)
+  if (ringbuf->num_elements >= ringbuf->buf_size)
   {
     return RINGBUF_STATUS_FULL;
   }
@@ -111,10 +111,21 @@ RingBuf_Status_t ringbuf_put(RingBuf_Handle_t ringbuf, const void *data)
   }
 
   // Copy the data into the buffer at the new tail position
-  memcpy(ringbuf->buf[ringbuf->tail * ringbuf->elem_size], data, ringbuf->elem_size);
+  memcpy(&(ringbuf->buf[ringbuf->tail * ringbuf->elem_size]), data, ringbuf->elem_size);
 
   // Increase number of elements
   ringbuf->num_elements++;
+
+  return RINGBUF_STATUS_OK;
+}
+
+RingBuf_Status_t ringbuf_clear(RingBuf_Handle_t *ringbuf)
+{
+  // Reset head and tail position
+  ringbuf->head = ringbuf->tail;
+
+  // Set number of elements to 0
+  ringbuf->num_elements = 0;
 
   return RINGBUF_STATUS_OK;
 }
